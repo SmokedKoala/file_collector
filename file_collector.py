@@ -1,3 +1,5 @@
+# список для топологической сортировки
+blacked=[]
 # словарь для зависимостей
 dependence_dir={}
 # словарь для действий
@@ -19,25 +21,31 @@ def parse_func():
         else:
             action_dir[cur_main]=cur_actions
 
-# функция создания последовательностей
+# функция создания последовательностей(топологическая сортировка)
 def dfs_rec(graph,start,path):
-    path = path + [start]
-    for edge in graph[start]: 
-        if edge not in path:
+    for edge in graph[start]:
+        if edge not in blacked and edge not in path:
             path = dfs_rec(graph, edge,path)
-    print (start)
+    path = path + [start]
+    blacked.append(start)
     return path
     
 
 # функция реализации действий
-def action_maker(element):
-    for action in action_dir[element]:
-        if action.find('@echo')!=-1:
-            print(action[6:-1].replace('"',""))
+def action_maker(action_path):
+    for element in action_path:
+        for action in action_dir[element]:
+            if action.find('@echo')!=-1:
+                print(action[6:-1].replace('"',""))
         
 
-
-parse_func()            
-print(dependence_dir)
-print(action_dir)
-print(dfs_rec(dependence_dir,'dress',[]))
+if __name__ == "__main__":
+    parse_func() 
+    # print(dependence_dir)
+    # print(action_dir)
+    while True:
+        cur_file = input("enter command ")
+        blacked.clear()
+        # print(dfs_rec(dependence_dir,'dress',[]))
+        action_path=dfs_rec(dependence_dir,cur_file,[])
+        action_maker(action_path)
