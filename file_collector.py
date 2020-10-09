@@ -23,6 +23,9 @@ def parse_func():
 
 # функция создания последовательностей(топологическая сортировка)
 def dfs_rec(graph,start,path):
+    if start not in graph:
+        print("Wrong Key")
+        return "Wrong Key"
     for edge in graph[start]:
         if edge not in blacked and edge not in path:
             path = dfs_rec(graph, edge,path)
@@ -37,6 +40,9 @@ def action_maker(action_path):
         for action in action_dir[element]:
             if action.find('@echo')!=-1:
                 print(action[6:-1].replace('"',""))
+            if action.find('@dir>')!=-1:
+                f = open(element, 'tw', encoding='utf-8')
+                f.close()
         
 
 if __name__ == "__main__":
@@ -44,8 +50,14 @@ if __name__ == "__main__":
     # print(dependence_dir)
     # print(action_dir)
     while True:
-        cur_file = input("enter command ")
+        cur_command = input("enter command ")
+        if cur_command == "exit":
+            break
         blacked.clear()
+        if cur_command =="make":
+            pass
+        else:
         # print(dfs_rec(dependence_dir,'dress',[]))
-        action_path=dfs_rec(dependence_dir,cur_file,[])
-        action_maker(action_path)
+            action_path=dfs_rec(dependence_dir,cur_command,[])
+            if action_path != "Wrong Key":
+                action_maker(action_path)

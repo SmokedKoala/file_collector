@@ -1,24 +1,30 @@
 dress: trousers shoes jacket
 	@echo "All done. Let's go outside!"
+	@dir> dress
 
 jacket: pullover
 	@echo "Putting on jacket."
+	@dir> jacket
 
 pullover: shirt
 	@echo "Putting on pullover."
-
+	@dir> pullover
 shirt:
 	@echo "Putting on shirt."
-	@echo "TEST."
+	@dir> shirt
 
 trousers: underpants
 	@echo "Putting on trousers."
+	@dir> trousers
 
 underpants:
 	@echo "Putting on underpants."
+	@dir> underpants
 
 shoes: socks
 	@echo "Putting on shoes."
+	@dir> shoes
 
 socks: pullover
 	@echo "Putting on socks."
+	@dir> socks
