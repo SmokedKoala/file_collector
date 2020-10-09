@@ -20,6 +20,8 @@ trousers: underpants
 underpants:
 	@echo "Putting on underpants."
 	@dir> underpants
+addition:
+	@echo "correct work."
 
 shoes: socks
 	@echo "Putting on shoes."
