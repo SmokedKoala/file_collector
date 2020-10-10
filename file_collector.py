@@ -1,6 +1,7 @@
 import os
 import re
-# список для топологической сортировки
+import shutil
+# список выполненных узлов для топологической сортировки
 blacked=[]
 # словарь для хеш таблицы
 hash_table={}
@@ -51,8 +52,16 @@ def action_maker(action_path):
                 if action.find('@echo')!=-1:
                     print(action[6:-1].replace('"',""))
                 if action.find('@dir>')!=-1:
-                    f = open(os.getcwd()+'\\myProject\\'+element, 'tw', encoding='utf-8')
-                    f.close()
+                    for file_to_create in action[6:-1].split(' '):
+                        f = open(os.getcwd()+'\\myProject\\'+file_to_create, 'tw', encoding='utf-8')
+                        f.close()
+                if action.find('@del')!=-1:
+                    for file_to_delete in action[5:-1].split(' '):
+                        try:
+                            os.remove(os.getcwd()+'\\myProject\\'+file_to_delete)
+                        except:
+                            pass
+
 
 # реализуем  хеш таблицу через словарь для контроля версий, ключи к которому будут генерироваться с помощью hash()
 def hash_table_check(element):
@@ -75,7 +84,7 @@ if __name__ == "__main__":
         cur_command = input("enter command: ")
         if cur_command == "exit":
             break
-        if cur_command =="make":
+        elif cur_command =="make":
             if "myProject" not in os.listdir():
                 os.mkdir("myProject")
             hash_table_update()
@@ -83,10 +92,16 @@ if __name__ == "__main__":
                 action_path=dfs_rec(dependence_dir,element,[])
                 if action_path != "Wrong Key":
                     action_maker(action_path) 
-        if re.match(r'make+[ _a-zA-Z0-9]*', cur_command)!=None:
+        elif re.match(r'make+[ _a-zA-Z0-9]*', cur_command)!=None:
             if "myProject" not in os.listdir():
                 os.mkdir("myProject")
             hash_table_update()
             action_path=dfs_rec(dependence_dir,cur_command[5:],[])
             if action_path != "Wrong Key":
                 action_maker(action_path) 
+        elif cur_command=="clean all":
+            shutil.rmtree(os.getcwd()+'\\myProject')
+        elif re.match(r'clean+[ _a-zA-Z0-9]*', cur_command)!=None:
+            os.remove(os.getcwd()+'\\myProject\\'+cur_command[6:])
+        else:
+            print("Wrong command")

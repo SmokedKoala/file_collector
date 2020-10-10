@@ -4,11 +4,12 @@ dress: trousers shoes jacket
 
 jacket: pullover
 	@echo "Putting on jacket."
-	@dir> jacket
+	@dir> jacket TESTFILE
 
 pullover: shirt
 	@echo "Putting on pullover."
 	@dir> pullover
+	@del shirt
 shirt:
 	@echo "Putting on shirt."
 	@dir> shirt
@@ -22,6 +23,7 @@ underpants:
 	@dir> underpants
 addition:
 	@echo "correct work."
+
 
 shoes: socks
 	@echo "Putting on shoes."
